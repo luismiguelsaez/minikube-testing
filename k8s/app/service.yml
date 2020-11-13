@@ -1,0 +1,31 @@
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1
+
+spec:
+  ports:
+    - protocol: TCP
+      name: api
+      port: 80
+      targetPort: 5000
+  selector:
+    app: app1
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: app2
+
+spec:
+  ports:
+    - protocol: TCP
+      name: api
+      port: 80
+      targetPort: 5000
+  selector:
+    app: app2

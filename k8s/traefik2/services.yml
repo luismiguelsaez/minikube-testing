@@ -1,0 +1,26 @@
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+  labels:
+    app: traefik
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+spec:
+  type: NodePort
+  #type: LoadBalancer
+  ports:
+    - protocol: TCP
+      name: web
+      port: 8080
+      nodePort: 30080
+      targetPort: 8080
+    - protocol: TCP
+      name: admin
+      port: 8000
+      nodePort: 30000
+      targetPort: 8000
+  selector:
+    app: traefik
