@@ -102,9 +102,11 @@ http://localhost:8080
 - Application routing test
 
 ```
-$ curl -H"Host:app1.traefik.io" http://localhost:8000
-"Hello World, I'm application 1 and my container is: app1-deployment-7d774897c5-bg8rm 2020-11-13 12:00:04.376217"
+$ curl -H"Host:app1.traefik.io" http://localhost:8000 -w"%{http_code} %{time_connect}/%{time_total}\n"
+"Hello World, I'm application 1 and my container is: app1-deployment-7d774897c5-s29zn 2020-11-13 12:04:37.953583"
+200 0,001142/0,022243
 
-$ curl -H"Host:app2.traefik.io" http://localhost:8000
-"Hello World, I'm application 2 and my container is: app2-deployment-cbf9cbfb9-g52w7 2020-11-13 12:00:09.211880"
+$ curl -H"Host:app2.traefik.io" http://localhost:8000 -w"%{http_code} %{time_connect}/%{time_total}\n"
+"Hello World, I'm application 2 and my container is: app2-deployment-cbf9cbfb9-c8g6m 2020-11-13 12:04:50.666509"
+200 0,000491/0,012286
 ```
