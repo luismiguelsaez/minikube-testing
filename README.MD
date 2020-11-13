@@ -72,6 +72,9 @@ http://localhost:8080/metrics
 
 ```
 docker build -t app:latest app
+docker tag app:latest luismiguelsaez/rest-test:latest
+docker login -u luismiguelsaez
+docker push luismiguelsaez/rest-test:latest
 ```
 
 ### Deploy traefik2
@@ -92,4 +95,16 @@ kubectl apply -f k8s/app
 kubectl port-forward services/traefik 8080:8080 8000:8000
 ```
 
+- Admin dashboard
+
 http://localhost:8080
+
+- Application routing test
+
+```
+$ curl -H"Host:app1.traefik.io" http://localhost:8000
+"Hello World, I'm application 1 and my container is: app1-deployment-7d774897c5-bg8rm 2020-11-13 12:00:04.376217"
+
+$ curl -H"Host:app2.traefik.io" http://localhost:8000
+"Hello World, I'm application 2 and my container is: app2-deployment-cbf9cbfb9-g52w7 2020-11-13 12:00:09.211880"
+```
