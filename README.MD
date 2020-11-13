@@ -38,13 +38,13 @@ $ minikube start
 🏄  Done! kubectl is now configured to use "minikube" by default
 ```
 
-## Deploy metrics server
+### Deploy metrics server
 
 ```
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
 ```
 
-## Install prometheus
+### Install prometheus
 
 ```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -53,7 +53,7 @@ helm search repo prometheus-community
 helm install prometheus prometheus-community/prometheus --create-namespace
 ```
 
-## Connect to prometheus server
+### Connect to prometheus server
 
 - Create tunnel
 
@@ -64,3 +64,32 @@ $ kubectl port-forward services/prometheus-server 8080:80
 - Connect to endpoint
 
 http://localhost:8080/metrics
+
+
+## Applications deployment
+
+### Build example application image
+
+```
+docker build -t app:latest app
+```
+
+### Deploy traefik2
+
+```
+kubectl apply -f k8s/traefik2
+```
+
+### Deploy application
+
+```
+kubectl apply -f k8s/app
+```
+
+### Access traefik admin and web endpoints
+
+```
+kubectl port-forward services/traefik 8080:8080 8000:8000
+```
+
+http://localhost:8080
