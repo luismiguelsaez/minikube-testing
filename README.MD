@@ -119,3 +119,13 @@ $ curl -H"Host:app2.traefik.io" http://localhost:8000 -w"%{http_code} %{time_con
 "Hello World, I'm application 2 and my container is: app2-deployment-cbf9cbfb9-c8g6m 2020-11-13 12:04:50.666509"
 200 0,000491/0,012286
 ```
+
+## Stop minikube
+
+```
+$ minikube stop
+
+✋  Stopping node "minikube"  ...
+🛑  Apagando "minikube" mediante SSH...
+🛑  1 nodes stopped.
+```
