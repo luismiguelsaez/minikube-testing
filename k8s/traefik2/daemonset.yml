@@ -24,13 +24,32 @@ spec:
           image: traefik:v2.3
           args:
             - --api.insecure
-            - --accesslog
-            - --entrypoints.web.Address=:8000
-            - --entrypoints.websecure.Address=:4443
+            #- --providers.file.directory=/path/to/dynamic/conf
             - --providers.kubernetescrd
             - --providers.kubernetesingress
+            - --accesslog
+            #- --entrypoints.file.directory=/etc/traefik/config/entrypoints.yml
+            - --entrypoints.web.Address=:8000
+            - --entrypoints.websecure.Address=:4443
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: 150m
+            requests:
+              cpu: "0.25"
+              memory: 100m
           ports:
             - name: web
               containerPort: 8000
             - name: admin
               containerPort: 8080
+          volumeMounts:
+            - name: config-endpoints
+              mountPath: /etc/traefik/config
+      volumes:
+        - name: config-endpoints
+          configMap:
+            name: traefik-config-entrypoints
+            items:
+              - key: entrypoints.yml
+                path: endpoints.yml

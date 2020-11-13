@@ -1,0 +1,13 @@
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: traefik-config-entrypoints
+data:
+  entrypoints.yml: |
+    entryPoints:
+      web:
+        address: ":8000"
+      websecure:
+        address: ":4443"

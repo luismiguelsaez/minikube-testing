@@ -1,9 +1,18 @@
+#---
+#
+#apiVersion: traefik.containo.us/v1alpha1
+#kind: TraefikService
+#metadata:
+#  name: example-app-service
+#  namespace: default
+#spec:
+
 ---
 
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: app1-ingress-route
+  name: example-app-ingress-routes
   namespace: default
 spec:
   entryPoints:
@@ -14,18 +23,6 @@ spec:
     services:
     - name: app1
       port: 80
-
----
-
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: app2-ingress-route
-  namespace: default
-spec:
-  entryPoints:
-    - web
-  routes:
   - match: Host(`app2.traefik.io`) && PathPrefix(`/`)
     kind: Rule
     services:

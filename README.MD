@@ -44,6 +44,15 @@ $ minikube start
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
 ```
 
+### Deploy kubernetes dashboard
+
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+kubectl port-forward services/kubernetes-dashboard 8443:443 -n kubernetes-dashboard
+```
+
+https://localhost:8443
+
 ### Install prometheus
 
 ```
