@@ -53,13 +53,13 @@ kubectl port-forward services/kubernetes-dashboard 8443:443 -n kubernetes-dashbo
 
 https://localhost:8443
 
-### Install prometheus
+### Install prometheus + grafana
 
 ```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add stable https://charts.helm.sh/stable
 helm repo update
-helm search repo prometheus-community
-helm install prometheus prometheus-community/prometheus --create-namespace
+helm install prometheus prometheus-community/kube-prometheus-stack
 ```
 
 ### Connect to prometheus server
