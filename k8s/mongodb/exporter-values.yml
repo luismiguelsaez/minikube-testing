@@ -3,7 +3,7 @@
 mongodb:
   uri: "mongodb://mongodb-service:27017"
 
-### Added prometheus label for autodiscover
+### Added prometheus label for metrics exporter autodiscover
 serviceMonitor:
   additionalLabels:
     release: prometheus
