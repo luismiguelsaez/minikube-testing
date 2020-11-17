@@ -1,0 +1,9 @@
+
+### It must point to the service internal DNS name and port
+mongodb:
+  uri: "mongodb://mongodb-service:27017"
+
+### Added prometheus label for autodiscover
+serviceMonitor:
+  additionalLabels:
+    release: prometheus

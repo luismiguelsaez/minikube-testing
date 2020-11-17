@@ -62,18 +62,19 @@ helm repo update
 helm install prometheus prometheus-community/kube-prometheus-stack
 ```
 
-### Connect to prometheus server
+### Connect to prometheus and grafana servers
 
-- Create tunnel
+- Create tunnels
 
 ```
-$ kubectl port-forward services/prometheus-server 8080:80
+kubectl port-forward services/prometheus-kube-prometheus-prometheus 9090 2>&1 >/dev/null &
+kubectl port-forward services/prometheus-grafana 8080:80 2>&1 >/dev/null &
 ```
 
-- Connect to endpoint
+- Connect to endpoints
 
-http://localhost:8080/metrics
-
+http://localhost:9090/metrics
+http://localhost:8080
 
 ## Applications deployment
 
@@ -119,6 +120,56 @@ $ curl -H"Host:app2.traefik.io" http://localhost:8000 -w"%{http_code} %{time_con
 "Hello World, I'm application 2 and my container is: app2-deployment-cbf9cbfb9-c8g6m 2020-11-13 12:04:50.666509"
 200 0,000491/0,012286
 ```
+
+## Deploy MongoDB
+
+### Deploy service
+
+```
+kubectl apply -f k8s/mongodb
+```
+
+### Deploy exporter ( https://prometheus.io/docs/instrumenting/exporters/ )
+
+- Add community repo ( https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-mongodb-exporter )
+
+```
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+```
+
+- Get chart available values
+```
+helm show values prometheus-community/prometheus-mongodb-exporter
+```
+
+- Install chart
+```
+helm install mongodb-exporter prometheus-community/prometheus-mongodb-exporter -f k8s/mongodb/exporter-values.yml
+```
+
+- Check deployed components
+```
+kubectl get svc | grep mongodb-exporter
+mongodb-exporter-prometheus-mongodb-exporter   ClusterIP   10.96.138.161    <none>        9216/TCP                        98s
+
+kubectl get pod | grep mongodb-exporter
+mongodb-exporter-prometheus-mongodb-exporter-6f546b47b7-q48p7   1/1     Running             0          103s
+
+kubectl get servicemonitor | grep mongodb-exporter
+mongodb-exporter-prometheus-mongodb-exporter         109s
+```
+
+- Check exported metrics
+```
+kubectl port-forward services/mongodb-exporter-prometheus-mongodb-exporter 9216 2>&1 >/dev/null &
+```
+
+http://localhost:9216/metrics
+
+- Check prometheus mongodb target
+
+http://127.0.0.1:9090/targets
 
 ## Stop minikube
 
